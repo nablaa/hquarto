@@ -14,6 +14,9 @@ boardSpec = hspec $
           setPieceSpec
           isPieceOnBoardSpec
           movePieceSpec
+          isWinningStateSpec
+          isDrawStateSpec
+          isValidBoardSpec
 
 initialBoardSpec :: Spec
 initialBoardSpec =
@@ -132,3 +135,138 @@ movePieceSpec =
                             ((3,1),Empty),
                             ((3,2),Empty),
                             ((3,3),Empty)]
+
+isWinningStateSpec :: Spec
+isWinningStateSpec =
+        describe "isWinningState" $ do
+          it "empty board is not in win state" $
+            isWinningState initialBoard `shouldBe` False
+          it "horizontal line of hollows wins" $
+            isWinningState horizontalHollows `shouldBe` True
+          it "vertical line of blacks wins" $
+            isWinningState verticalBlacks `shouldBe` True
+          it "diagonal line of talls wins" $
+            isWinningState diagonalTalls `shouldBe` True
+          it "diagonal line of shorts wins" $
+            isWinningState diagonalShorts `shouldBe` True
+
+
+isDrawStateSpec :: Spec
+isDrawStateSpec =
+        describe "isDrawState" $
+          it "horizontal line of hollows is not a draw" $
+            isDrawState horizontalHollows `shouldBe` False
+
+isValidBoardSpec :: Spec
+isValidBoardSpec =
+        describe "isValidBoard" $ do
+          it "empty board is valid" $
+            isValidBoard initialBoard `shouldBe` True
+          it "no two similar pieces means that the board is valid" $
+            isValidBoard horizontalHollows `shouldBe` True
+          it "two same pieces on board means that the board is invalid" $
+            isValidBoard invalidBoard `shouldBe` False
+        where invalidBoard = array ((0,0),(3,3))
+                                   [
+                                   ((0, 0), Empty),
+                                   ((0, 1), Empty),
+                                   ((0, 2), Empty),
+                                   ((0, 3), Empty),
+                                   ((1, 0), Cell (Piece White Circular Short Hollow)),
+                                   ((1, 1), Cell (Piece White Circular Tall Hollow)),
+                                   ((1, 2), Cell (Piece Black Circular Short Hollow)),
+                                   ((1, 3), Cell (Piece White Circular Short Hollow)),
+                                   ((2, 0), Empty),
+                                   ((2, 1), Empty),
+                                   ((2, 2), Empty),
+                                   ((2, 3), Empty),
+                                   ((3, 0), Empty),
+                                   ((3, 1), Empty),
+                                   ((3, 2), Empty),
+                                   ((3, 3), Empty)
+                                   ]
+
+
+horizontalHollows :: Board
+horizontalHollows = array ((0,0),(3,3))
+        [
+        ((0, 0), Empty),
+        ((0, 1), Empty),
+        ((0, 2), Empty),
+        ((0, 3), Empty),
+        ((1, 0), Cell (Piece White Circular Short Hollow)),
+        ((1, 1), Cell (Piece White Circular Tall Hollow)),
+        ((1, 2), Cell (Piece Black Circular Short Hollow)),
+        ((1, 3), Cell (Piece White Square Short Hollow)),
+        ((2, 0), Empty),
+        ((2, 1), Empty),
+        ((2, 2), Empty),
+        ((2, 3), Empty),
+        ((3, 0), Empty),
+        ((3, 1), Empty),
+        ((3, 2), Empty),
+        ((3, 3), Empty)
+        ]
+
+verticalBlacks :: Board
+verticalBlacks = array ((0,0),(3,3))
+        [
+        ((0, 0), Empty),
+        ((0, 1), Empty),
+        ((0, 2), Cell (Piece Black Circular Short Hollow)),
+        ((0, 3), Empty),
+        ((1, 0), Empty),
+        ((1, 1), Empty),
+        ((1, 2), Cell (Piece Black Square Tall Solid)),
+        ((1, 3), Empty),
+        ((2, 0), Empty),
+        ((2, 1), Empty),
+        ((2, 2), Cell (Piece Black Square Short Solid)),
+        ((2, 3), Empty),
+        ((3, 0), Empty),
+        ((3, 1), Empty),
+        ((3, 2), Cell (Piece Black Square Short Hollow)),
+        ((3, 3), Empty)
+        ]
+
+diagonalTalls :: Board
+diagonalTalls = array ((0,0),(3,3))
+        [
+        ((0, 0), Cell (Piece White Circular Tall Solid)),
+        ((0, 1), Empty),
+        ((0, 2), Empty),
+        ((0, 3), Empty),
+        ((1, 0), Empty),
+        ((1, 1), Cell (Piece Black Circular Tall Solid)),
+        ((1, 2), Empty),
+        ((1, 3), Empty),
+        ((2, 0), Empty),
+        ((2, 1), Empty),
+        ((2, 2), Cell (Piece Black Square Tall Hollow)),
+        ((2, 3), Empty),
+        ((3, 0), Empty),
+        ((3, 1), Empty),
+        ((3, 2), Empty),
+        ((3, 3), Cell (Piece White Square Tall Hollow))
+        ]
+
+diagonalShorts :: Board
+diagonalShorts = array ((0,0),(3,3))
+        [
+        ((0, 0), Empty),
+        ((0, 1), Empty),
+        ((0, 2), Empty),
+        ((0, 3), Cell (Piece White Circular Short Solid)),
+        ((1, 0), Empty),
+        ((1, 1), Empty),
+        ((1, 2), Cell (Piece Black Circular Short Solid)),
+        ((1, 3), Empty),
+        ((2, 0), Empty),
+        ((2, 1), Cell (Piece White Circular Short Hollow)),
+        ((2, 2), Empty),
+        ((2, 3), Empty),
+        ((3, 0), Cell (Piece White Square Short Hollow)),
+        ((3, 1), Empty),
+        ((3, 2), Empty),
+        ((3, 3), Empty)
+        ]
