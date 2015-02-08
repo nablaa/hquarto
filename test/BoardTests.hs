@@ -13,6 +13,7 @@ boardSpec = hspec $
           coordinatesSpec
           setPieceSpec
           isPieceOnBoardSpec
+          movePieceSpec
 
 initialBoardSpec :: Spec
 initialBoardSpec =
@@ -70,6 +71,52 @@ isPieceOnBoardSpec =
             isPieceOnBoard board (Piece Black Square Tall Solid) `shouldBe` True
         where board = array ((0,0),(3,3))
                            [((0,0),Empty),
+                            ((0,1),Empty),
+                            ((0,2),Empty),
+                            ((0,3),Cell (Piece Black Circular Short Hollow)),
+                            ((1,0),Empty),
+                            ((1,1),Empty),
+                            ((1,2),Cell (Piece Black Square Tall Solid)),
+                            ((1,3),Empty),
+                            ((2,0),Empty),
+                            ((2,1),Empty),
+                            ((2,2),Empty),
+                            ((2,3),Empty),
+                            ((3,0),Empty),
+                            ((3,1),Empty),
+                            ((3,2),Empty),
+                            ((3,3),Empty)]
+
+movePieceSpec :: Spec
+movePieceSpec =
+        describe "movePiece" $ do
+          it "move with invalid coordinates should be illegal" $
+            movePiece initialBoard (Piece White Square Tall Solid) (-1, 0) `shouldBe` Nothing
+          it "move with non-empty cell should be illegal" $
+            movePiece board (Piece White Square Tall Solid) (1, 2) `shouldBe` Nothing
+          it "move with piece already on board should be illegal" $
+            movePiece board (Piece Black Circular Short Hollow) (0, 0) `shouldBe` Nothing
+          it "valid move should return updated board" $
+            movePiece board (Piece Black Circular Short Solid) (0, 0) `shouldBe` Just newBoard
+        where board = array ((0,0),(3,3))
+                           [((0,0),Empty),
+                            ((0,1),Empty),
+                            ((0,2),Empty),
+                            ((0,3),Cell (Piece Black Circular Short Hollow)),
+                            ((1,0),Empty),
+                            ((1,1),Empty),
+                            ((1,2),Cell (Piece Black Square Tall Solid)),
+                            ((1,3),Empty),
+                            ((2,0),Empty),
+                            ((2,1),Empty),
+                            ((2,2),Empty),
+                            ((2,3),Empty),
+                            ((3,0),Empty),
+                            ((3,1),Empty),
+                            ((3,2),Empty),
+                            ((3,3),Empty)]
+              newBoard = array ((0,0),(3,3))
+                           [((0,0),Cell (Piece Black Circular Short Solid)),
                             ((0,1),Empty),
                             ((0,2),Empty),
                             ((0,3),Cell (Piece Black Circular Short Hollow)),
