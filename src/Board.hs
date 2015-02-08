@@ -12,6 +12,7 @@ data Cell = Cell Piece | Empty
             deriving (Show, Eq)
 
 type Coordinates = (Int, Int)
+type Line = [Coordinates]
 type Board = Array Coordinates Cell
 
 initialBoard :: Board
@@ -49,16 +50,16 @@ isValidBoard :: Board -> Bool
 isValidBoard board = length (nub pieces) == length pieces
         where pieces = filter (Empty /=) (elems board)
 
-boardLines :: [[Coordinates]]
+boardLines :: [Line]
 boardLines = [[(i, j) | j <- [0..3]] | i <- [0..3]]
           ++ [[(i, j) | i <- [0..3]] | j <- [0..3]]
           ++ [[(i, j) | i <- [0..3], j <- [0..3], i == j]]
           ++ [[(i, j) | i <- [0..3], j <- [0..3], i + j == 3]]
 
-lineCells:: Board -> [Coordinates] -> [Cell]
+lineCells:: Board -> Line -> [Cell]
 lineCells board = map (\x -> board ! x)
 
-linePieces :: Board -> [Coordinates] -> [Piece]
+linePieces :: Board -> Line -> [Piece]
 linePieces board line = mapMaybe cellToPiece cells
         where cells = lineCells board line
 
@@ -66,6 +67,6 @@ cellToPiece :: Cell -> Maybe Piece
 cellToPiece (Cell piece) = Just piece
 cellToPiece Empty = Nothing
 
-isWinningLine :: Board -> [Coordinates] -> Bool
+isWinningLine :: Board -> Line -> Bool
 isWinningLine board line = haveCommonProperty pieces
         where pieces = linePieces board line
