@@ -1,4 +1,5 @@
-module Piece (Piece) where
+module Piece (Piece(..), Color(..), Shape(..),
+              Height(..), Top(..)) where
 
 data Color = White | Black
            deriving (Show, Eq)

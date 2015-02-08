@@ -1,13 +1,16 @@
-module Board (Board, initialBoard, movePiece, isWinningState, isDrawState, Square(..)) where
+module Board (Board, initialBoard, movePiece,
+              isWinningState, isDrawState, Cell(..),
+              isInsideBoard, isPieceOnBoard,
+              setPiece) where
 
 import Data.Array
 import Piece
 
-data Square = Square Piece | Empty
+data Cell = Cell Piece | Empty
             deriving (Show, Eq)
 
 type Coordinates = (Int, Int)
-type Board = Array Coordinates Square
+type Board = Array Coordinates Cell
 
 initialBoard :: Board
 initialBoard = listArray ((0, 0), (3, 3)) (repeat Empty)
@@ -20,3 +23,12 @@ isWinningState = undefined
 
 isDrawState :: Board -> Bool
 isDrawState = undefined
+
+isInsideBoard :: Coordinates -> Bool
+isInsideBoard (i, j) = i >= 0 && i <= 3 && j >= 0 && j <= 3
+
+isPieceOnBoard :: Board -> Piece -> Bool
+isPieceOnBoard = undefined
+
+setPiece :: Board -> Coordinates -> Piece -> Board
+setPiece board coordinates piece = board // [(coordinates, Cell piece)]
