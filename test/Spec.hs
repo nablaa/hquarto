@@ -1,4 +1,6 @@
 import BoardTests
+import PieceTests
 
 main :: IO ()
-main = boardSpec
+main = do pieceSpec
+          boardSpec
