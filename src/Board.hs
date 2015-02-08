@@ -28,7 +28,7 @@ isInsideBoard :: Coordinates -> Bool
 isInsideBoard (i, j) = i >= 0 && i <= 3 && j >= 0 && j <= 3
 
 isPieceOnBoard :: Board -> Piece -> Bool
-isPieceOnBoard = undefined
+isPieceOnBoard board piece = Cell piece `elem` elems board
 
 setPiece :: Board -> Coordinates -> Piece -> Board
 setPiece board coordinates piece = board // [(coordinates, Cell piece)]

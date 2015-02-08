@@ -12,6 +12,7 @@ boardSpec = hspec $
           initialBoardSpec
           coordinatesSpec
           setPieceSpec
+          isPieceOnBoardSpec
 
 initialBoardSpec :: Spec
 initialBoardSpec =
@@ -48,6 +49,33 @@ setPieceSpec =
                             ((1,0),Empty),
                             ((1,1),Empty),
                             ((1,2),Cell (Piece White Square Tall Solid)),
+                            ((1,3),Empty),
+                            ((2,0),Empty),
+                            ((2,1),Empty),
+                            ((2,2),Empty),
+                            ((2,3),Empty),
+                            ((3,0),Empty),
+                            ((3,1),Empty),
+                            ((3,2),Empty),
+                            ((3,3),Empty)]
+
+isPieceOnBoardSpec :: Spec
+isPieceOnBoardSpec =
+        describe "isPieceOnBoard" $ do
+          it "empty board has no pieces" $
+            isPieceOnBoard initialBoard (Piece White Square Tall Solid) `shouldBe` False
+          it "no exact piece on board" $
+            isPieceOnBoard board (Piece White Square Tall Solid) `shouldBe` False
+          it "piece found on board" $
+            isPieceOnBoard board (Piece Black Square Tall Solid) `shouldBe` True
+        where board = array ((0,0),(3,3))
+                           [((0,0),Empty),
+                            ((0,1),Empty),
+                            ((0,2),Empty),
+                            ((0,3),Cell (Piece Black Circular Short Hollow)),
+                            ((1,0),Empty),
+                            ((1,1),Empty),
+                            ((1,2),Cell (Piece Black Square Tall Solid)),
                             ((1,3),Empty),
                             ((2,0),Empty),
                             ((2,1),Empty),
