@@ -33,3 +33,15 @@ Test-suite hlint
   build-depends:       base >=4.6 && <4.7
                        , hlint >= 1.9
                        , hquarto
+
+Test-Suite spec
+  Type:                exitcode-stdio-1.0
+  Default-Language:    Haskell2010
+  Hs-Source-Dirs:      src, test
+  Ghc-Options:         -Wall -Werror
+  Main-Is:             Spec.hs
+
+  build-depends:       base >=4.6 && <4.7
+                       , array >=0.4 && <0.5
+                       , hspec >= 2.0
+                       , hquarto

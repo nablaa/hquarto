@@ -1,4 +1,4 @@
-module Board (Board) where
+module Board (Board, initialBoard, movePiece, isWinningState, isDrawState, Square(..)) where
 
 import Data.Array
 import Piece
