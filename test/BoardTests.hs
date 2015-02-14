@@ -17,6 +17,7 @@ boardSpec = hspec $
           isWinningStateSpec
           isDrawStateSpec
           isValidBoardSpec
+          isLegalNextPieceSpec
 
 initialBoardSpec :: Spec
 initialBoardSpec =
@@ -89,6 +90,38 @@ isPieceOnBoardSpec =
                             ((3,1),Empty),
                             ((3,2),Empty),
                             ((3,3),Empty)]
+
+isLegalNextPieceSpec :: Spec
+isLegalNextPieceSpec =
+        describe "isLegalNextPiece" $ do
+          it "any piece is legal when the board is empty" $ do
+            isLegalNextPiece initialBoard (Piece White Square Tall Solid) `shouldBe` True
+            isLegalNextPiece initialBoard (Piece Black Circular Short Hollow) `shouldBe` True
+          it "previously placed pieces are not legal next pieces" $ do
+            isLegalNextPiece board (Piece Black Circular Short Hollow) `shouldBe` False
+            isLegalNextPiece board (Piece Black Square Tall Solid) `shouldBe` False
+            isLegalNextPiece board (Piece White Square Short Hollow) `shouldBe` False
+          it "pieces not on the board are legal next pieces" $ do
+            isLegalNextPiece board (Piece Black Circular Short Solid) `shouldBe` True
+            isLegalNextPiece board (Piece White Circular Short Solid) `shouldBe` True
+        where board = array ((0,0),(3,3))
+                           [((0,0),Empty),
+                            ((0,1),Empty),
+                            ((0,2),Empty),
+                            ((0,3),Cell (Piece Black Circular Short Hollow)),
+                            ((1,0),Empty),
+                            ((1,1),Empty),
+                            ((1,2),Cell (Piece Black Square Tall Solid)),
+                            ((1,3),Empty),
+                            ((2,0),Empty),
+                            ((2,1),Empty),
+                            ((2,2),Empty),
+                            ((2,3),Cell (Piece White Square Short Hollow)),
+                            ((3,0),Empty),
+                            ((3,1),Empty),
+                            ((3,2),Empty),
+                            ((3,3),Empty)]
+
 
 movePieceSpec :: Spec
 movePieceSpec =

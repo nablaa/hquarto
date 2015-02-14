@@ -1,7 +1,8 @@
 module Board (Board, initialBoard, movePiece,
               isWinningState, isDrawState, Cell(..),
               isInsideBoard, isPieceOnBoard,
-              setPiece, isValidBoard) where
+              setPiece, isValidBoard, Coordinates,
+              isLegalNextPiece) where
 
 import Data.Maybe
 import Data.Array
@@ -42,6 +43,9 @@ isEmptyCell board coordinates = board ! coordinates == Empty
 
 isPieceOnBoard :: Board -> Piece -> Bool
 isPieceOnBoard board piece = Cell piece `elem` elems board
+
+isLegalNextPiece :: Board -> Piece -> Bool
+isLegalNextPiece board piece = not $ isPieceOnBoard board piece
 
 setPiece :: Board -> Coordinates -> Piece -> Board
 setPiece board coordinates piece = board // [(coordinates, Cell piece)]
