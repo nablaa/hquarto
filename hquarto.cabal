@@ -16,6 +16,12 @@ build-type:          Simple
 -- extra-source-files:
 cabal-version:       >=1.10
 
+executable             hquarto
+  main-is:             Main.hs
+  hs-source-dirs:      src
+  build-depends:       base >=4.6 && <4.7, array >=0.4 && <0.5
+  default-language:    Haskell2010
+
 library
   exposed-modules:     Board, Piece
   -- other-modules:

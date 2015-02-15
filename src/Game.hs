@@ -1,5 +1,5 @@
 module Game (GameState(..), newGame, makeMove, getWinner,
-             isDraw, hasEnded, nextPlayer) where
+             isDraw, hasEnded, nextPlayer, printGameState) where
 
 import Data.Maybe
 import Piece
@@ -40,3 +40,15 @@ hasEnded game = isDraw game || isJust (getWinner game)
 nextPlayer :: Player -> Player
 nextPlayer First = Second
 nextPlayer Second = First
+
+printGameState :: GameState -> String
+printGameState state@(GameState board player piece) =
+        printBoard board ++ "\n" ++
+        "Current player: " ++ show player ++ "\n" ++
+        "Next piece to place: " ++ printPiece piece ++ " (" ++ show piece ++ ")" ++
+        endedText ++ drawText ++ winnerText
+        where drawText = if isDraw state then "\nDraw!\n" else ""
+              winnerText = case getWinner state of
+                                   Just p -> "\nThe winner is " ++ show (nextPlayer p)
+                                   Nothing -> ""
+              endedText = if hasEnded state then "\nGame ended\n" else ""
