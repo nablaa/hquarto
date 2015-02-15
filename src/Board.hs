@@ -2,7 +2,7 @@ module Board (Board, initialBoard, movePiece,
               isWinningState, isDrawState, Cell(..),
               isInsideBoard, isPieceOnBoard,
               setPiece, isValidBoard, Coordinates,
-              isLegalNextPiece) where
+              isLegalNextPiece, printBoard) where
 
 import Data.Maybe
 import Data.Array
@@ -74,3 +74,17 @@ cellToPiece Empty = Nothing
 isWinningLine :: Board -> Line -> Bool
 isWinningLine board line = haveCommonProperty pieces
         where pieces = linePieces board line
+
+printBoard :: Board -> String
+printBoard board = header ++ intercalate header (map printRow rows) ++ header
+        where rows = toLines $ elems board :: [[Cell]]
+              toLines [] = []
+              toLines xs = take 4 xs : toLines (drop 4 xs)
+              header = "+----+----+----+----+\n"
+
+printRow :: [Cell] -> String
+printRow cells = "|" ++ intercalate "|" (map printCell cells) ++ "|\n"
+
+printCell :: Cell -> String
+printCell Empty = "    "
+printCell (Cell piece) = printPiece piece

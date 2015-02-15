@@ -18,6 +18,7 @@ boardSpec = hspec $
           isDrawStateSpec
           isValidBoardSpec
           isLegalNextPieceSpec
+          printBoardSpec
 
 initialBoardSpec :: Spec
 initialBoardSpec =
@@ -303,3 +304,29 @@ diagonalShorts = array ((0,0),(3,3))
         ((3, 2), Empty),
         ((3, 3), Empty)
         ]
+
+printBoardSpec :: Spec
+printBoardSpec =
+        describe "printBoard" $ do
+          it "empty board should be just an empty grid" $
+            printBoard initialBoard `shouldBe` empty
+          it "pieces should be printed correctly" $
+            printBoard diagonalShorts `shouldBe` diagonals
+        where empty = "+----+----+----+----+\n" ++
+                      "|    |    |    |    |\n" ++
+                      "+----+----+----+----+\n" ++
+                      "|    |    |    |    |\n" ++
+                      "+----+----+----+----+\n" ++
+                      "|    |    |    |    |\n" ++
+                      "+----+----+----+----+\n" ++
+                      "|    |    |    |    |\n" ++
+                      "+----+----+----+----+\n"
+              diagonals = "+----+----+----+----+\n" ++
+                          "|    |    |    |cshT|\n" ++
+                          "+----+----+----+----+\n" ++
+                          "|    |    |CshT|    |\n" ++
+                          "+----+----+----+----+\n" ++
+                          "|    |csht|    |    |\n" ++
+                          "+----+----+----+----+\n" ++
+                          "|cSht|    |    |    |\n" ++
+                          "+----+----+----+----+\n"
