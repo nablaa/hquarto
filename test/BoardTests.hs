@@ -183,6 +183,8 @@ isWinningStateSpec =
             isWinningState diagonalTalls `shouldBe` True
           it "diagonal line of shorts wins" $
             isWinningState diagonalShorts `shouldBe` True
+          it "less than four pieces in line is not a win" $
+            isWinningState threeShorts `shouldBe` False
 
 
 isDrawStateSpec :: Spec
@@ -300,6 +302,27 @@ diagonalShorts = array ((0,0),(3,3))
         ((2, 2), Empty),
         ((2, 3), Empty),
         ((3, 0), Cell (Piece White Square Short Hollow)),
+        ((3, 1), Empty),
+        ((3, 2), Empty),
+        ((3, 3), Empty)
+        ]
+
+threeShorts :: Board
+threeShorts = array ((0,0),(3,3))
+        [
+        ((0, 0), Empty),
+        ((0, 1), Empty),
+        ((0, 2), Empty),
+        ((0, 3), Cell (Piece White Circular Short Solid)),
+        ((1, 0), Empty),
+        ((1, 1), Empty),
+        ((1, 2), Cell (Piece Black Circular Short Solid)),
+        ((1, 3), Empty),
+        ((2, 0), Empty),
+        ((2, 1), Cell (Piece White Circular Short Hollow)),
+        ((2, 2), Empty),
+        ((2, 3), Empty),
+        ((3, 0), Empty),
         ((3, 1), Empty),
         ((3, 2), Empty),
         ((3, 3), Empty)

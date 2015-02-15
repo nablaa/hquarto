@@ -72,7 +72,7 @@ cellToPiece (Cell piece) = Just piece
 cellToPiece Empty = Nothing
 
 isWinningLine :: Board -> Line -> Bool
-isWinningLine board line = haveCommonProperty pieces
+isWinningLine board line = length pieces == 4 && haveCommonProperty pieces
         where pieces = linePieces board line
 
 printBoard :: Board -> String
