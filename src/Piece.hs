@@ -1,6 +1,8 @@
 module Piece (Piece(..), Color(..), Shape(..),
-              Height(..), Top(..), haveCommonProperty) where
+              Height(..), Top(..), haveCommonProperty,
+              printPiece, readPiece) where
 
+import Data.Char
 import Data.List
 
 data Color = White | Black
@@ -41,3 +43,36 @@ pieceToBools (Piece Black Square Short Hollow) = [True, True, False, False]
 pieceToBools (Piece Black Square Short Solid) = [True, True, False, True]
 pieceToBools (Piece Black Square Tall Hollow) = [True, True, True, False]
 pieceToBools (Piece Black Square Tall Solid) = [True, True, True, True]
+
+printPiece :: Piece -> String
+printPiece piece = zipWith caseSelector (pieceToBools piece) "CSHT"
+        where caseSelector True = toUpper
+              caseSelector False = toLower
+
+readPiece :: String -> Maybe Piece
+readPiece [c, s, h, t] = do color <- readColor c
+                            shape <- readShape s
+                            height <- readHeight h
+                            top <- readTop t
+                            Just (Piece color shape height top)
+readPiece _ = Nothing
+
+readColor :: Char -> Maybe Color
+readColor 'c' = Just White
+readColor 'C' = Just Black
+readColor _ = Nothing
+
+readShape :: Char -> Maybe Shape
+readShape 's' = Just Circular
+readShape 'S' = Just Square
+readShape _ = Nothing
+
+readHeight :: Char -> Maybe Height
+readHeight 'h' = Just Short
+readHeight 'H' = Just Tall
+readHeight _ = Nothing
+
+readTop :: Char -> Maybe Top
+readTop 't' = Just Hollow
+readTop 'T' = Just Solid
+readTop _ = Nothing
